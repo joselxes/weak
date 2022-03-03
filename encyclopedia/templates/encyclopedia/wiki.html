@@ -1,0 +1,28 @@
+{% extends "encyclopedia/layout.html" %}
+{% block title %}
+    {{name}}
+{% endblock %}
+
+{% block body %}
+
+    {% if empty %}
+        <h3>Sorry, the page "{{name}}" does not exist. :( </h3>
+        
+        <h3>You can create it in the "Create New Page" link</h3>
+    {% else %}
+        <h1>Page {{ name }}</h1>
+        <p>{{ content }}</p>
+    {% endif %}
+
+
+
+    {% if similars %}
+        <h3>similar options</h3>    
+    {% endif %}
+    <ul>
+        {% for entry in entries %}
+            <li> <a href="{% url 'wiki:wikiResult' name=entry%}">{{ entry }}</a> </li>
+
+        {% endfor %}
+    </ul>
+{% endblock %}
