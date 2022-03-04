@@ -5,5 +5,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Create Pages {{ name }}</h1>
+    {% if error%}
+        <!-- <h3>Error the page " "  already exists</h3>  -->
+          <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                <strong>Sorry!</strong> The page "{{ name }}" already exists .
+          </div>
+    {% endif %}
+    <h1>Create Pages </h1>
+    <form action="{% url 'wikis:create' %}" method="post">
+        {% csrf_token %}
+        {{ newPage }}
+        <input  type="submit" value="Save">
+    </form>
 {% endblock %}

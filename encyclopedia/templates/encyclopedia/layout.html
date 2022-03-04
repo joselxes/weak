@@ -13,19 +13,19 @@
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
 
-                <form action="{% url 'wiki:wikiPage' %}" method="post">
+                <form action="{% url 'wikis:wikiPage' %}" method="post">
                     {% csrf_token %}
                     {{ form }}
                     <!-- <input class="search" type="text" name="q" placeholder="Search Encyclopedia"> -->
                 </form>
                 <div>
-                    <a href="{% url 'wiki:index' %}">Home</a>
+                    <a href="{% url 'wikis:index' %}">Home</a>
                 </div>
                 <div>
-                    <a href="{% url 'wiki:create' %}">Create New Page</a>
+                    <a href="{% url 'wikis:create' %}">Create New Page</a>
                 </div>
                 <div>
-                    <a href="{% url 'wiki:wikiResult' name=random %}">Random Page </a>                    
+                    <a href="{% url 'wikis:wikiResult' name=random %}">Random Page </a>                    
                 </div>
                 {% block nav %}
                 {% endblock %}

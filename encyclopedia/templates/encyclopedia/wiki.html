@@ -3,6 +3,14 @@
     {{name}}
 {% endblock %}
 
+
+{% block nav %}
+<div>
+    <a href="{% url 'wikis:wikiResult' name=random %}">Edit Page </a>                    
+</div>
+{% endblock %}
+
+
 {% block body %}
 
     {% if empty %}
@@ -21,8 +29,8 @@
     {% endif %}
     <ul>
         {% for entry in entries %}
-            <li> <a href="{% url 'wiki:wikiResult' name=entry%}">{{ entry }}</a> </li>
-
+            <li> <a href="{% url 'wikis:wikiResult' name=entry%}">{{ entry }}</a> </li>
+        
         {% endfor %}
     </ul>
 {% endblock %}
