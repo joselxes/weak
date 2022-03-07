@@ -4,6 +4,9 @@ from . import util
 from django import forms
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from sys import exit
+import markdown2
+
 class qSearchForm(forms.Form):
     q = forms.CharField(label=False)
 
@@ -50,16 +53,18 @@ def wiki(request, name):
             nlist.append(string)
             nameBool= True
             print(string)
-
     if found:
         content=util.get_entry(name)
+        content1=markdown2.markdown(content)
+        print(name,"-------------\n",content,"\n-------------\n",content1,"-------------\n")
         return render(request, "encyclopedia/wiki.html", {
         "name":name,
         "random": entries[randrange(len(entries))],
-        "content":content,
+        "content":content1,
         "form":qSearchForm,
         })
     if nameBool:
+
         return render(request, "encyclopedia/wiki.html", {
             "empty":True,
             "similars":True,
@@ -83,8 +88,7 @@ def NewPage(request):
         print("---------------------")
         qsearch = NewPageForm(request.POST)
         if qsearch.is_valid():
-            tsearch = qsearch.cleaned_data["title"]        
-            
+            tsearch = qsearch.cleaned_data["title"]                    
             for string in entries:
                 if string.lower()== tsearch:
                     name=string
@@ -98,7 +102,7 @@ def NewPage(request):
 
             csearch = qsearch.cleaned_data["content"]        
             print(tsearch,csearch,util.list_entries())
-            util.save_entry(tsearch,csearch)
+            util.save_entry(tsearch,"# "+tsearch+"\n"+csearch)
             print(tsearch,csearch,util.list_entries())
             entries=util.list_entries()
             return HttpResponseRedirect ( reverse ("wikis:index" ))            
