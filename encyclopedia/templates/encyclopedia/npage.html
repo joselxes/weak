@@ -12,10 +12,12 @@
                 <strong>Sorry!</strong> The page "{{ name }}" already exists .
           </div>
     {% endif %}
+<!-- formaaaaaa -->
     <h1>Create Pages </h1>
     <form action="{% url 'wikis:create' %}" method="post">
         {% csrf_token %}
         {{ newPage }}
         <input  type="submit" value="Save">
     </form>
+
 {% endblock %}

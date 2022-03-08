@@ -5,9 +5,12 @@
 
 
 {% block nav %}
-<div>
-    <a href="{% url 'wikis:wikiResult' name=random %}">Edit Page </a>                    
-</div>
+    <div>
+        <a href="{% url 'wikis:wikiedit' name=name %}">Edit Page </a>                    
+    </div>
+    <!-- <div>
+        <a href="{% url 'wikis:edit' name=name %}">Edit Page 2 </a>                    
+    </div> -->
 {% endblock %}
 
 

@@ -5,12 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages {{ name }}</h1>
-
-    <ul>
-        {% for entry in entries %}
-            <li>{{ entry }}</li>
-        {% endfor %}
-    </ul>
-
+    <h1>Edit {{ name }}</h1>    
+    <form action="{% url 'wikis:wikiedit' name=name %}" method="post">
+        {% csrf_token %}
+        {{ editPage }}
+        <input  type="submit" value="edit">
+    </form>
 {% endblock %}

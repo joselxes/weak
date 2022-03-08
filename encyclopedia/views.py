@@ -14,7 +14,10 @@ class NewPageForm(forms.Form):
     title = forms.CharField(label="Title")
     # comment= forms.CharField(widget=forms.Textarea())
     content= forms.CharField(label="Content",widget=forms.Textarea(attrs={"rows":"15", "cols":"90"}))
-
+class editPageForm(forms.Form):
+    title = forms.CharField(label="Title", widget=forms.HiddenInput)
+    # comment= forms.CharField(widget=forms.Textarea())
+    content= forms.CharField(label="Content",widget=forms.Textarea(attrs={"rows":"15", "cols":"90"}))
    
 def index(request):
     entries=util.list_entries()
@@ -52,11 +55,11 @@ def wiki(request, name):
         elif namel in string.lower():
             nlist.append(string)
             nameBool= True
-            print(string)
+            # print(string)
     if found:
         content=util.get_entry(name)
         content1=markdown2.markdown(content)
-        print(name,"-------------\n",content,"\n-------------\n",content1,"-------------\n")
+        # print(name,"-------------\n",content,"\n-------------\n",content1,"-------------\n")
         return render(request, "encyclopedia/wiki.html", {
         "name":name,
         "random": entries[randrange(len(entries))],
@@ -85,12 +88,12 @@ def NewPage(request):
     entries=util.list_entries()
     entryR=randrange(len(entries))
     if request.method=="POST":
-        print("---------------------")
         qsearch = NewPageForm(request.POST)
         if qsearch.is_valid():
-            tsearch = qsearch.cleaned_data["title"]                    
+            tsearch = qsearch.cleaned_data["title"]
             for string in entries:
-                if string.lower()== tsearch:
+                # print("\n //////////",string.lower(), tsearch.lower() ,string.lower()== tsearch.lower(),"\n //////////")
+                if string.lower()== tsearch.lower():
                     name=string
                     return render(request, "encyclopedia/npage.html", {
                     "error":True,
@@ -101,12 +104,11 @@ def NewPage(request):
                     })
 
             csearch = qsearch.cleaned_data["content"]        
-            print(tsearch,csearch,util.list_entries())
+            # print(tsearch,csearch,util.list_entries())
             util.save_entry(tsearch,"# "+tsearch+"\n"+csearch)
-            print(tsearch,csearch,util.list_entries())
+            # print(tsearch,csearch,util.list_entries())
             entries=util.list_entries()
-            return HttpResponseRedirect ( reverse ("wikis:index" ))            
-
+            return HttpResponseRedirect ( reverse ("wikis:index" ))
 
 
     return render(request, "encyclopedia/npage.html", {
@@ -114,4 +116,19 @@ def NewPage(request):
         "random": entries[randrange(len(entries))],
         "form":qSearchForm,
     })
-
+def epague(request,name):
+    if request.method=="POST":
+        editEntrie = editPageForm(request.POST)
+        if editEntrie.is_valid():
+            newEntrie = editEntrie.cleaned_data["content"]
+            newName = editEntrie.cleaned_data["title"]
+            util.save_entry(newName,newEntrie)
+            return HttpResponseRedirect ( reverse ("wikis:wikiResult", kwargs={ 'name':name }))
+    entries=util.list_entries()
+    content=util.get_entry(name)
+    form=editPageForm(initial={'title':name,'content':content})
+    return render(request, "encyclopedia/epage.html", {
+        "editPage":form,
+        "random": entries[randrange(len(entries))],
+        "name": name,       
+    })
