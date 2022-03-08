@@ -108,7 +108,7 @@ def NewPage(request):
             util.save_entry(tsearch,"# "+tsearch+"\n"+csearch)
             # print(tsearch,csearch,util.list_entries())
             entries=util.list_entries()
-            return HttpResponseRedirect ( reverse ("wikis:index" ))
+            return HttpResponseRedirect ( reverse ("wikis:wikiResult", kwargs={ 'name':tsearch } ))
 
 
     return render(request, "encyclopedia/npage.html", {
